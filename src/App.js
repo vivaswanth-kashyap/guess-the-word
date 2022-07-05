@@ -12,8 +12,8 @@ function App({ counter }) {
   return (
     <div className="App mx-auto">
       <Hero />
-      <div className="flex flex-row">
-        <div className="container mx-auto">
+      <div className="flex flex-row grow">
+        <div className="container mx-auto grow">
           <Hints />
         </div>
         <div className="container mx-auto">
