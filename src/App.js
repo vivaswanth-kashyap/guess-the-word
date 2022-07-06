@@ -10,13 +10,13 @@ import "./App.css";
 function App({ counter }) {
   console.log(counter);
   return (
-    <div className="App mx-auto">
+    <div className="App mx-auto grow">
       <Hero />
-      <div className="flex flex-row grow">
-        <div className="container mx-auto grow">
+      <div className="flex flex-row bg-teal-50 p-10 space-x-10">
+        <div className="container  grow">
           <Hints />
         </div>
-        <div className="container mx-auto">
+        <div className="container">
           <History />
         </div>
       </div>
