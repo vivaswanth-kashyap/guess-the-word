@@ -1,17 +1,16 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import Hero from "./components/Hero";
+import WordsController from "./components/WordsController";
 import Hints from "./components/Hints";
 import History from "./components/History";
 
 import "./App.css";
 
-function App({ counter }) {
-  console.log(counter);
+function App() {
   return (
     <div className="App mx-auto grow">
-      <Hero />
+      <WordsController />
       <div className="flex flex-row bg-teal-50 p-10 space-x-10">
         <div className="container  grow">
           <Hints />
@@ -24,8 +23,4 @@ function App({ counter }) {
   );
 }
 
-const mapStateToProps = (state, ownProps) => ({
-  counter: state.words.counter,
-});
-
-export default connect(mapStateToProps, null)(App);
+export default App;

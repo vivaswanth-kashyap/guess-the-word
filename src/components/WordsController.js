@@ -1,14 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 
-import { validateguess } from "../store/actions";
+import { newWord } from "../store/actions";
+import { validateGuess } from "../store/actions";
 import puzzle from "../assets/puzzle.png";
 
-const Hero = (props) => {
+const WordsController = (props) => {
   const [word, setWord] = useState(0);
+  useEffect(() => {
+    props.newWord(Date.now());
+  }, []);
 
   console.log(props);
-  console.log(word);
   return (
     <div className="bg-teal-400 p-1">
       <div>
@@ -28,7 +31,7 @@ const Hero = (props) => {
           Guess The Word
         </h1>
         <input
-          onChange={(e) => setWord(e.target.value)}
+          onChange={(e) => setWord(word)}
           className="m-5 p-5 h-4 text-indigo-900 bg-teal-50"
           type="text"
         ></input>
@@ -36,7 +39,7 @@ const Hero = (props) => {
           type="submit"
           style={{ fontFamily: "'Roboto Mono', monospace" }}
           className="bg-teal-400 hover:bg-teal-500 border-1 border-black w-20 h-7 px-2  m-3 rounded-md"
-          onClick={(e) => props.validateguess(word)}
+          onClick={(e) => props.validateGuess(word)}
         >
           submit
         </button>
@@ -47,10 +50,14 @@ const Hero = (props) => {
 
 const mapStateToProps = (state, ownProps) => ({
   score: state.words.score,
+  loading: state.words.loading,
+  current_word_data: state.words.current_word_data,
+  current_word_hints: state.words.current_word_hints,
 });
 
 const mapDispatchToProps = {
-  validateguess,
+  newWord,
+  validateGuess,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Hero);
+export default connect(mapStateToProps, mapDispatchToProps)(WordsController);
