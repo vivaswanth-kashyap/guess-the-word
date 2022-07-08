@@ -41,6 +41,12 @@ export const revealHint = (index) => (dispatch, getState) => {
   });
 };
 
+export const reset = () => async (dispatch) => {
+  dispatch(newWord());
+  dispatch({
+    type: actions.RESET_GAME,
+  });
+};
 export const newWord = (date) => async (dispatch) => {
   dispatch({ type: actions.LOADING_NEW_WORD });
   let new_word = await randomWord();
@@ -60,13 +66,38 @@ export const newWord = (date) => async (dispatch) => {
   });
 };
 
+export const skip = () => async (dispatch) => {
+  dispatch(newWord());
+  dispatch({
+    type: actions.SKIP,
+  });
+};
+
 export const validateGuess = (inpWord) => async (dispatch, getState) => {
-  let { current_word } = getState().words;
-  if (inpWord == current_word) {
+  let { current_word_data } = getState().words;
+  console.log(current_word_data, inpWord);
+  let history = [];
+  history.push(inpWord);
+  if (inpWord === current_word_data.word) {
     dispatch({
       type: actions.SUCCESS,
     });
+    dispatch({
+      type: actions.LOADING_NEW_WORD,
+    });
+    setTimeout(() => {
+      dispatch({ type: actions.RESET_MATCH });
+    }, 2000);
+    dispatch(newWord());
+  } else {
+    dispatch({
+      type: actions.FAILURE,
+    });
   }
+  dispatch({
+    type: actions.HISTORY,
+    payload: { history: [...history] },
+  });
 };
 const processWord = ({ word, ex, def, related }) => {
   console.log(related);
@@ -87,6 +118,18 @@ const processWord = ({ word, ex, def, related }) => {
     default: true,
     text: def.pop().text,
     type: "def",
+  });
+  new_word_hints.push({
+    status: false,
+    score: -2,
+    text: word.charAt(0),
+    type: "first_letter",
+  });
+  new_word_hints.push({
+    status: false,
+    score: -1,
+    text: word.charAt(word.length - 1),
+    type: "last_letter",
   });
   def.map((d) =>
     new_word_hints.push({
@@ -120,17 +163,6 @@ const processWord = ({ word, ex, def, related }) => {
       type: "ant",
     })
   );
-  new_word_hints.push({
-    status: false,
-    score: -2,
-    text: word.charAt(0),
-    type: "first_letter",
-  });
-  new_word_hints.push({
-    status: false,
-    score: -1,
-    text: word.charAt(word.length - 1),
-    type: "last_letter",
-  });
+
   return { new_word_data, new_word_hints };
 };

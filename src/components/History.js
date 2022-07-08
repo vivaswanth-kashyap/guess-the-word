@@ -1,13 +1,20 @@
 import React from "react";
+import { connect } from "react-redux";
 
-const History = () => {
+import { validateGuess } from "../store/actions";
+
+import { skip, reset } from "../store/actions";
+
+const History = (props) => {
+  console.log(props.history);
   return (
     <div className="h-100 bg-zinc-200 m-1 p-5 rounded-md">
       <button
+        onClick={(e) => props.skip()}
         style={{ fontFamily: "'Roboto Mono', monospace" }}
         className="bg-red-300 px-2 w-50 h-7 border-2  border-black rounded-md m-1 hover:bg-red-400 focus:bg-red-400 focus:ring "
       >
-        get new word ( 4pts )
+        get new word ( 5pts )
       </button>{" "}
       <h1
         style={{ fontFamily: "'Finlandica', sans-serif" }}
@@ -27,11 +34,12 @@ const History = () => {
             style={{ fontFamily: "'Roboto Mono', monospace" }}
             className="text-right"
           >
-            {0}
+            {props.gameScore}
           </h3>
         </div>
       </div>
       <button
+        onClick={(e) => props.reset()}
         style={{ width: "max-content", fontFamily: "'Roboto Mono', monospace" }}
         className="bg-red-300  h-7 border-2 m-5 text-slate-800  px-2 border-black rounded-md m-1 hover:bg-red-400"
       >
@@ -41,5 +49,17 @@ const History = () => {
     </div>
   );
 };
+const mapStateToProps = (state, ownProps) => ({
+  loading: state.words.loading,
+  current_word_hints: state.words.current_word_hints,
+  score: state.words.score,
+  gameScore: state.words.gameScore,
+  history: state.words.history,
+});
 
-export default History;
+const mapDispatchToProps = {
+  skip,
+  reset,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(History);

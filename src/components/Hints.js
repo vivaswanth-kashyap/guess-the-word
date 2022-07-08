@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { revealHint } from "../store/actions";
 const Hints = ({ current_word_hints, ...props }) => {
-  if (props.loading) return null;
+  if (props.loading) return "Loading new word";
   const findType = (hint) => {
     switch (hint.type) {
       case "def":
@@ -17,6 +17,8 @@ const Hints = ({ current_word_hints, ...props }) => {
         return "First Letter";
       case "last_letter":
         return "Last letter";
+      default:
+        return;
     }
   };
   return (

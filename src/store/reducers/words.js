@@ -3,8 +3,11 @@ import actions from "../actions/ActionTypes";
 
 const INITIAL_STATE = {
   score: 0,
+  gameScore: 0,
   loading: true,
   current_word_data: null,
+  message: null,
+  current_word_hints: null,
 };
 
 const words = (state = INITIAL_STATE, action) => {
@@ -26,12 +29,30 @@ const words = (state = INITIAL_STATE, action) => {
       };
     case ActionTypes.LOADING_NEW_WORD:
       return { ...state, loading: true };
-    case actions.SUCCESS_GUESS:
-      return { ...state, score: state.score + 10 };
-    case actions.WRONG_GUESS:
-      return { ...state, score: state.score - 3 };
+    case actions.SUCCESS:
+      return {
+        ...state,
+        score: state.score + 10,
+        gameScore: state.gameScore + 10,
+        message: "correct",
+      };
+    case actions.FAILURE:
+      return {
+        ...state,
+        score: state.score - 3,
+        state: state.gameScore - 3,
+        message: "wrong",
+      };
+    case actions.RESET_MATCH:
+      return { ...state, message: null };
+    case actions.HISTORY:
+      return { ...state, history: payload.history };
+    case actions.SKIP:
+      return { ...state, score: state.score - 5, gameScore: 0 };
+    case actions.RESET_GAME:
+      return { ...INITIAL_STATE, score: 0 };
     default:
-      return state;
+      return { ...state };
   }
 };
 

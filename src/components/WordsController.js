@@ -6,10 +6,33 @@ import { validateGuess } from "../store/actions";
 import puzzle from "../assets/puzzle.png";
 
 const WordsController = (props) => {
-  const [word, setWord] = useState(0);
+  const [word, setWord] = useState("");
   useEffect(() => {
     props.newWord(Date.now());
   }, []);
+
+  const getMessage = (message) => {
+    switch (message) {
+      case "correct":
+        return "That is the Correct Answer!! YOu get 10 points";
+      case "wrong":
+        return "Your Answer is wrong :( ,Please try again ";
+      default:
+        return "";
+    }
+  };
+
+  const handleSubmit = (e) => {
+    setWord("");
+    props.validateGuess(word);
+  };
+
+  const handleEnter = (e) => {
+    if (e.key === `Enter`) {
+      setWord("");
+      props.validateGuess(word);
+    }
+  };
 
   console.log(props);
   return (
@@ -31,7 +54,8 @@ const WordsController = (props) => {
           Guess The Word
         </h1>
         <input
-          onChange={(e) => setWord(word)}
+          onChange={(e) => setWord(e.target.value)}
+          value={word}
           className="m-5 p-5 h-4 text-indigo-900 bg-teal-50"
           type="text"
         ></input>
@@ -39,10 +63,13 @@ const WordsController = (props) => {
           type="submit"
           style={{ fontFamily: "'Roboto Mono', monospace" }}
           className="bg-teal-400 hover:bg-teal-500 border-1 border-black w-20 h-7 px-2  m-3 rounded-md"
-          onClick={(e) => props.validateGuess(word)}
+          onClick={handleSubmit}
+          onKeyPress={handleEnter}
         >
           submit
         </button>
+
+        <h3 className="text-slate-900 m-1">{getMessage(props.message)}</h3>
       </div>
     </div>
   );
@@ -53,6 +80,7 @@ const mapStateToProps = (state, ownProps) => ({
   loading: state.words.loading,
   current_word_data: state.words.current_word_data,
   current_word_hints: state.words.current_word_hints,
+  message: state.words.message,
 });
 
 const mapDispatchToProps = {
