@@ -81,6 +81,7 @@ const mapStateToProps = (state, ownProps) => ({
   current_word_data: state.words.current_word_data,
   current_word_hints: state.words.current_word_hints,
   message: state.words.message,
+  history_selected: state.words.history_selected,
 });
 
 const mapDispatchToProps = {

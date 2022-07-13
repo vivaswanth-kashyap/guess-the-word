@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 import { validateGuess } from "../store/actions";
 
-import { skip, reset } from "../store/actions";
+import { skip, reset , showHints , playing} from "../store/actions";
 
 const History = (props) => {
   console.log(props.history);
@@ -23,8 +23,11 @@ const History = (props) => {
         History
       </h1>
       <div>
-        <div className="bg-zinc-100 mx-50 border-2 border-white rounded-md  m-1">
+        <div 
+        onClick={(e) => props.playing()}
+        className="bg-zinc-100 mx-50 border-2 border-white rounded-md  m-1">
           <h3
+            
             style={{ fontFamily: "'Roboto Mono', monospace" }}
             className="w-50 h-10 bottom text-left pt-2"
           >
@@ -46,6 +49,22 @@ const History = (props) => {
         {" "}
         Reset Game!
       </button>
+      {(props.history || []).map((state , index) => {
+        return(
+          
+          <div key={index}
+          onClick={(e) => props.showHints(index)}
+          
+          className={
+            `container rounded-md m-1 border-white border-2 mx-50 ${
+              state.message ==  'correct'? "bg-lime-200 hover:bg-lime-300" : "bg-red-300 hover:bg-red-400"
+            } `
+          }>{state.data.word}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{state.gameScore}</div>
+        )
+      })}
     </div>
   );
 };
@@ -55,11 +74,14 @@ const mapStateToProps = (state, ownProps) => ({
   score: state.words.score,
   gameScore: state.words.gameScore,
   history: state.words.history,
+  inpWord : state.words.current_word_data,
 });
 
 const mapDispatchToProps = {
   skip,
   reset,
+  showHints,
+  playing
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(History);

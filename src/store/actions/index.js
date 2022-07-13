@@ -15,6 +15,7 @@ function examples(word) {
 function relatedWords(word) {
   return get(`/word/${word}/relatedWords`);
 }
+
 function get(apiPath) {
   return axios
     .get(config.apiHost + apiPath, {
@@ -66,21 +67,65 @@ export const newWord = (date) => async (dispatch) => {
   });
 };
 
-export const skip = () => async (dispatch) => {
+export const skip = () => async (dispatch, getState) => {
+  let { current_word_data, score, gameScore, current_word_hints, history } =
+    getState().words;
   dispatch(newWord());
+  history = history || [];
+  history.push({
+    word: current_word_data.word,
+    data: current_word_data,
+    score: score,
+    gameScore: gameScore - 5,
+    hints: current_word_hints,
+    message: "wrong",
+  });
   dispatch({
     type: actions.SKIP,
+    payload: { history: history },
+  });
+};
+
+export const playing = () => async (dispatch) => {
+  dispatch({
+    type: actions.PLAYING,
+  });
+};
+export const showHints = (index) => async (dispatch, getState) => {
+  let words = getState().words;
+  dispatch({
+    type: actions.SHOW_HINTS,
+    payload: {
+      current_word_hints: words.current_word_hints,
+      score: words.score,
+      word: words.current_word_data.word,
+      history_selected: true,
+      index_selected: index,
+    },
   });
 };
 
 export const validateGuess = (inpWord) => async (dispatch, getState) => {
-  let { current_word_data } = getState().words;
+  let { current_word_data, score, gameScore, current_word_hints, history } =
+    getState().words;
   console.log(current_word_data, inpWord);
-  let history = [];
-  history.push(inpWord);
+  let inpArr = [];
+  inpArr.push(inpWord);
+  console.log(history);
+
   if (inpWord === current_word_data.word) {
+    history.push({
+      inpArr: inpArr,
+      data: current_word_data,
+      score: score,
+      gameScore: gameScore + 10,
+      hints: current_word_hints,
+      message: "correct",
+    });
+    console.log(history);
     dispatch({
       type: actions.SUCCESS,
+      payload: { history: history },
     });
     dispatch({
       type: actions.LOADING_NEW_WORD,
@@ -94,10 +139,6 @@ export const validateGuess = (inpWord) => async (dispatch, getState) => {
       type: actions.FAILURE,
     });
   }
-  dispatch({
-    type: actions.HISTORY,
-    payload: { history: [...history] },
-  });
 };
 const processWord = ({ word, ex, def, related }) => {
   console.log(related);

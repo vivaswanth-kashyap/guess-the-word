@@ -21,9 +21,13 @@ const Hints = ({ current_word_hints, ...props }) => {
         return;
     }
   };
+  console.log(props);
+  let hints_list = props.history_selected
+    ? (props.history[props.index_selected] || {}).hints
+    : current_word_hints;
   return (
     <div className="flex flex-col">
-      {current_word_hints.map((hint, index) => {
+      {hints_list.map((hint, index) => {
         return (
           <div
             key={index}
@@ -71,6 +75,10 @@ const Hints = ({ current_word_hints, ...props }) => {
 const mapStateToProps = (state, ownProps) => ({
   loading: state.words.loading,
   current_word_hints: state.words.current_word_hints,
+  index_selected: state.words.index_selected,
+  history_selected: state.words.history_selected,
+  history: state.words.history,
+  guesses: state.words.guesses,
 });
 
 const mapDispatchToProps = {
