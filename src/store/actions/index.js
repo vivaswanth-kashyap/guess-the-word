@@ -68,11 +68,12 @@ export const newWord = (date) => async (dispatch) => {
 };
 
 export const skip = () => async (dispatch, getState) => {
-  let { current_word_data, score, gameScore, current_word_hints, history } =
+  let { current_word_data, score, gameScore, current_word_hints, history ,inpArr } =
     getState().words;
   dispatch(newWord());
   history = history || [];
   history.push({
+    inpArr : inpArr,
     word: current_word_data.word,
     data: current_word_data,
     score: score,
@@ -106,22 +107,21 @@ export const showHints = (index) => async (dispatch, getState) => {
 };
 
 export const validateGuess = (inpWord) => async (dispatch, getState) => {
-  let { current_word_data, score, gameScore, current_word_hints, history } =
+  let { current_word_data, score, gameScore, current_word_hints, history ,inpArr} =
     getState().words;
   console.log(current_word_data, inpWord);
-  let inpArr = [];
-  inpArr.push(inpWord);
   console.log(history);
 
   if (inpWord === current_word_data.word) {
     history.push({
-      inpArr: inpArr,
+      inpArr : [...inpArr, {word : inpWord , is_correct: true}],
       data: current_word_data,
       score: score,
       gameScore: gameScore + 10,
       hints: current_word_hints,
       message: "correct",
     });
+    console.log([...inpArr, {word : inpWord , is_correct: true}])
     console.log(history);
     dispatch({
       type: actions.SUCCESS,
@@ -137,6 +137,7 @@ export const validateGuess = (inpWord) => async (dispatch, getState) => {
   } else {
     dispatch({
       type: actions.FAILURE,
+      payload: {inpArr : [...inpArr, {word : inpWord , is_correct: false}]},
     });
   }
 };

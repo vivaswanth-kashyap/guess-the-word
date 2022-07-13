@@ -8,6 +8,7 @@ const INITIAL_STATE = {
 
   current_word_data: null,
   history: [],
+  inpArr: [],
   message: null,
   current_word_hints: null,
   history_selected: false,
@@ -42,6 +43,7 @@ const words = (state = INITIAL_STATE, action) => {
         gameScore: state.gameScore + 10,
         message: "correct",
         history: payload.history,
+        inpArr : [],
       };
     case actions.FAILURE:
       return {
@@ -49,14 +51,15 @@ const words = (state = INITIAL_STATE, action) => {
         score: state.score - 3,
         gameScore: state.gameScore - 3,
         message: "wrong",
+        inpArr: payload.inpArr,
       };
     case actions.RESET_MATCH:
       return { ...state, message: null };
     case actions.HISTORY:
       return { ...state, history: payload.history };
     case actions.SKIP:
-      return { ...state, score: state.score - 5, history: payload.history };
-    case actions.RESET_GAME:
+      return { ...state, score: state.score - 5, history: payload.history ,inpArr: []};
+    case actions.RESET_GAME: 
       return { ...INITIAL_STATE };
     case actions.SHOW_HINTS:
       return {
@@ -67,9 +70,9 @@ const words = (state = INITIAL_STATE, action) => {
     case actions.PLAYING:
       return {
         ...state,
-        index_selected : null,
+        index_selected: null,
         history_selected: false,
-      }
+      };
     default:
       return { ...state };
   }

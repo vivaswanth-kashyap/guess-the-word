@@ -59,10 +59,7 @@ const History = (props) => {
             `container rounded-md m-1 border-white border-2 mx-50 ${
               state.message ==  'correct'? "bg-lime-200 hover:bg-lime-300" : "bg-red-300 hover:bg-red-400"
             } `
-          }>{state.data.word}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{state.gameScore}</div>
+          }><h3 style={{ fontFamily: "'Roboto Mono', monospace" }} className="m-1 text-left">{state.data.word}</h3><h3 style={{ fontFamily: "'Roboto Mono', monospace" }}className="text-right m-1">{state.gameScore}</h3></div>
         )
       })}
     </div>

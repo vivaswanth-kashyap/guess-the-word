@@ -25,8 +25,17 @@ const Hints = ({ current_word_hints, ...props }) => {
   let hints_list = props.history_selected
     ? (props.history[props.index_selected] || {}).hints
     : current_word_hints;
+  let guess_list = props.history_selected ? (props.history[props.index_selected] || {}).inpArr : props.inpArr;
   return (
     <div className="flex flex-col">
+      <div style={{ fontFamily: "'Roboto Mono', monospace" }} className="container flex flex-row rounded-md p-7 m-1 text-left bg-zinc-200">guesses:
+      {guess_list.map((guess , index) => {
+        return(
+          <div key={index} className = {`rounded-sm p-2 m-1 ${
+            guess.is_correct ? "bg-lime-200 hover:bg-lime-300" : "bg-red-300 hover:bg-red-400"
+          }`}><h3 style={{width : "max-content"}} className="text-left">{guess.word}</h3></div>
+        )
+      })}</div>
       {hints_list.map((hint, index) => {
         return (
           <div
@@ -78,7 +87,7 @@ const mapStateToProps = (state, ownProps) => ({
   index_selected: state.words.index_selected,
   history_selected: state.words.history_selected,
   history: state.words.history,
-  guesses: state.words.guesses,
+  inpArr: state.words.inpArr,
 });
 
 const mapDispatchToProps = {

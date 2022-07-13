@@ -53,7 +53,9 @@ const WordsController = (props) => {
         >
           Guess The Word
         </h1>
-        <input
+        {props.history_selected ? "click on playing to continue" : <React.Fragment>
+        <input 
+          disabled = {props.history_selected}
           onChange={(e) => setWord(e.target.value)}
           value={word}
           className="m-5 p-5 h-4 text-indigo-900 bg-teal-50"
@@ -68,8 +70,9 @@ const WordsController = (props) => {
         >
           submit
         </button>
-
+      
         <h3 className="text-slate-900 m-1">{getMessage(props.message)}</h3>
+        </React.Fragment>}
       </div>
     </div>
   );
