@@ -14,7 +14,7 @@ const WordsController = (props) => {
   const getMessage = (message) => {
     switch (message) {
       case "correct":
-        return "That is the Correct Answer!! YOu get 10 points";
+        return "That is the Correct Answer!! You get 10 points";
       case "wrong":
         return "Your Answer is wrong :( ,Please try again ";
       default:
@@ -29,8 +29,7 @@ const WordsController = (props) => {
 
   const handleEnter = (e) => {
     if (e.key === `Enter`) {
-      setWord("");
-      props.validateGuess(word);
+      handleSubmit(e);
     }
   };
 
@@ -58,13 +57,13 @@ const WordsController = (props) => {
           value={word}
           className="m-5 p-5 h-4 text-indigo-900 bg-teal-50"
           type="text"
+          onKeyPress={(e) => handleEnter(e)}
         ></input>
         <button
           type="submit"
           style={{ fontFamily: "'Roboto Mono', monospace" }}
           className="bg-teal-400 hover:bg-teal-500 border-1 border-black w-20 h-7 px-2  m-3 rounded-md"
           onClick={handleSubmit}
-          onKeyPress={handleEnter}
         >
           submit
         </button>
