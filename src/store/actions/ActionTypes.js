@@ -8,4 +8,6 @@ export default {
   RESET_MATCH: "RESET_MATCH",
   SKIP: "SKIP",
   RESET_GAME: "RESET_GAME",
+  SHOW_HINTS: "SHOW_HINTS",
+  PLAYING: "PLAYING"
 };
